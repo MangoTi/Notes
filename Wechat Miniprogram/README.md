@@ -156,4 +156,6 @@
       }
     })
     
-  事件分为冒泡和非冒泡，如touchstart/tap等都是冒泡的，而像form的submit,input的input事件都是非冒泡，事件的绑定有bind和catch两种，bind不会阻止冒泡，而catch可以阻止向上冒泡
+  事件分为冒泡和非冒泡，如touchstart/tap等都是冒泡的，而像form的submit,input的input事件都是非冒泡，事件的绑定有bind和catch两种，bind不会阻止冒泡，而catch可以阻止向上冒泡。  
+  触摸类事件支持捕获阶段，位于冒泡之前，事件到达节点的顺序与冒泡相反。监听捕获用capture-bind、capture-catch，后者将中断捕获阶段和取消冒泡阶段。  
+  未完待续...
