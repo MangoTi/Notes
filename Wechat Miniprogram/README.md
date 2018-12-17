@@ -186,15 +186,79 @@
         /**
          * 组件的方法列表
          */
+        lifetimes: {//组件的生命周期
+             attached() {
+               // 在组件实例进入页面节点树时执行
+             },
+             detached() {
+               // 在组件实例被从页面节点树移除时执行
+             },
+        },
         methods: {
-            lifetimes: {//组件的生命周期
-              attached() {
-                // 在组件实例进入页面节点树时执行
-              },
-              detached() {
-                // 在组件实例被从页面节点树移除时执行
-              },
-            },
         }
     })
+ 使用时，要在使用页面的json文件中声明：
+ 
+    {
+      "usingComponents": {
+        "my-component": "/components/component-tag-name"
+      }
+    }
+ 在页面中就可以直接用<my-component></my-component>，标签内部可以放slot内容
+
+    <view>
+      <component-tag-name prop-a="{{dataFieldA}}" prop-b="{{dataFieldB}}">
+        <!-- 这部分内容将被放置在组件 <slot> 的位置上 -->
+        <view>这里是插入到组件slot中的内容</view>
+      </component-tag-name>
+    </view>
+prop-a是属性名
+2、组件的生命周期  
 ![生命周期函数](https://github.com/MangoTi/Notes/blob/master/1c0156d3b8344f57d3ff1a16a117610.png)
+生命周期可以像上面一样写在lifetimes里，也可以直接写在外面，跟mehtods同级。  
+除此之外，还有组件所在页面的生命周期，它们并非与组件有很强的关联，但有时组件需要获知，以便组件内部处理。在 pageLifetimes 定义段中定义。其中可用的生命周期包括：show(组件所在页面显示时执行)，hide(隐藏时)，resize(组件所在页面尺寸发生变化，参数是size)。
+
+3、组件的behaviors
+用于组件间代码共享的特性，即若干个组件都有相同的生命周期、数据、属性、方法等，可以使用该属性。  
+
+     // my-behavior.js
+     module.exports = Behavior({//使用该构造器定义
+       behaviors: [],//可以引用其他的behaviors
+       properties: {
+         myBehaviorProperty: {
+           type: String
+         }
+       },
+       data: {
+         myBehaviorData: {}
+       },
+       attached() {},
+       methods: {
+         myBehaviorMethod() {}
+       }
+     })
+
+引用如下：
+
+     // my-component.js
+     const myBehavior = require('my-behavior')
+     Component({
+       behaviors: [myBehavior],
+       properties: {
+         myProperty: {
+           type: String
+         }
+       },
+       data: {
+         myData: {}
+       },
+       attached() {},
+       methods: {
+         myMethod() {}
+       }
+     })
+引用时它的属性、数据和方法会被合并到组件中，生命周期函数也会在对应时机被调用，例如当触发attached方法时会一次触发myBehavior和my-component中的attached方法。  
+注意：
+    * 如果出现同名，组件本身的属性或方法会覆盖 behavior 中的属性或方法，如果引用了多个 behavior ，在定义段中靠后 behavior 中的属性或方法会覆盖靠前的属性或方法；
+    * 如果有同名的数据字段，如果数据是对象类型，会进行对象合并，如果是非对象类型则会进行相互覆盖；
+    * 生命周期函数不会相互覆盖，而是在对应触发时机被逐个调用。如果同一个 behavior 被一个组件多次引用，它定义的生命周期函数只会被执行一次。
