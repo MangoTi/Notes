@@ -197,4 +197,4 @@
             },
         }
     })
-![生命周期函数]'https://github.com/MangoTi/Notes/blob/master/1c0156d3b8344f57d3ff1a16a117610.png'
+![生命周期函数](https://github.com/MangoTi/Notes/blob/master/1c0156d3b8344f57d3ff1a16a117610.png)
