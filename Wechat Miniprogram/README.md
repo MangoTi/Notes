@@ -157,5 +157,44 @@
     })
     
   事件分为冒泡和非冒泡，如touchstart/tap等都是冒泡的，而像form的submit,input的input事件都是非冒泡，事件的绑定有bind和catch两种，bind不会阻止冒泡，而catch可以阻止向上冒泡。  
-  触摸类事件支持捕获阶段，位于冒泡之前，事件到达节点的顺序与冒泡相反。监听捕获用capture-bind、capture-catch，后者将中断捕获阶段和取消冒泡阶段。  
-  未完待续...
+  触摸类事件支持捕获阶段，位于冒泡之前，事件到达节点的顺序与冒泡相反。监听捕获用capture-bind、capture-catch，后者将中断捕获阶段和取消冒泡阶段。   
+  
+## 插播一个自定义组件
+1、组件也是有自己的四件套文件的，在微信开发工具里可以一键创建一套，然后wxml文件中就是标签结构，js文件不同于其余页面，结构如下：
+
+    // pages/my/dateareaPicker.js
+    Component({
+        /**
+         * 组件的属性列表
+         */
+        properties: {
+            showDatePicker:{
+                type:Boolean,//类型
+                value:false//默认值
+            }
+        },
+
+        /**
+         * 组件的初始数据
+         */
+        data: {
+            begin:'',//行为统计时间段开始时间
+            end:'',//行为统计时间段结束时间
+            today:'',//今天日期
+        },
+
+        /**
+         * 组件的方法列表
+         */
+        methods: {
+            lifetimes: {//组件的生命周期
+              attached() {
+                // 在组件实例进入页面节点树时执行
+              },
+              detached() {
+                // 在组件实例被从页面节点树移除时执行
+              },
+            },
+        }
+    })
+![生命周期函数]''
