@@ -268,5 +268,5 @@ prop-a是属性名
     
 4、父子组件间传值
 父组件传给子组件就像上文实例中使用properties属性，在组建中采用驼峰，在组件标签中改成小写用-连接，如showDate -> show-date；  
-子组件传给父组件采用方法triggerEvent触发父级的事件
+子组件传给父组件采用方法triggerEvent触发父级的事件，待完善
 
