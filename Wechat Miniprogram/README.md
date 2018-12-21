@@ -132,7 +132,7 @@
   
 ## 视图层
 
-1、WXML
+（一）WXML
 
   数据绑定用{{}}，组件属性/控制属性/关键字都要在双引号内，可以在{{}}内各种运算，也可以将对象组合，若变量名相同，后面的值会覆盖前面的；  
   列表渲染是wx:for，index和item是默认的，或者用wx:for-item/wx:for-index指定变量名，若是列表会发生变化且希望各项保持自己的特征和状态，就要指定wx:key，可以是item的某个属性，直接是个字符串，也可以是保留关键字*+this，代表item本身，但是需要item是一个数字或字符串；  
@@ -159,11 +159,16 @@
   事件分为冒泡和非冒泡，如touchstart/tap等都是冒泡的，而像form的submit,input的input事件都是非冒泡，事件的绑定有bind和catch两种，bind不会阻止冒泡，而catch可以阻止向上冒泡。  
   触摸类事件支持捕获阶段，位于冒泡之前，事件到达节点的顺序与冒泡相反。监听捕获用capture-bind、capture-catch，后者将中断捕获阶段和取消冒泡阶段。
   
-2、WXSS
-  
-  
-## 插播一个自定义组件
-1、组件也是有自己的四件套文件的，在微信开发工具里可以一键创建一套，然后wxml文件中就是标签结构，js文件不同于其余页面，结构如下：
+（二）WXSS
+  独有的尺寸单位rpx，根据屏幕宽度自适应，750rpx;  
+  可以在wxss中导入其他样式表用@import "common.wxss";  
+  在wxml的内联style中接收动态的样式，在运行时会进行解析，请尽量避免将静态的样式写进 style 中，以免影响渲染速度。
+ 
+（三）基础组件
+组件的公共属性data-* (如data-value)可以绑定任意的属性，组件上触发的事件时，会发送给事件处理函数，事件的参数中会有一个dataset，会包含所有的data-* ,例如value:'',组件都不能在绑定时指定参数，因此只能通过这种方式传参。  
+hidden可以用该属性控制显示影藏。
+（三）自定义组件  
+1、也是有自己的四件套文件的，在微信开发工具里可以一键创建一套，然后wxml文件中就是标签结构，js文件不同于其余页面，结构如下：
 
     // pages/my/dateareaPicker.js
     Component({
@@ -268,5 +273,65 @@ prop-a是属性名
     
 4、父子组件间传值
 父组件传给子组件就像上文实例中使用properties属性，在组建中采用驼峰，在组件标签中改成小写用-连接，如showDate -> show-date；  
-子组件传给父组件采用方法triggerEvent触发父级的事件，待完善
+子组件传给父组件采用方法triggerEvent触发父级的事件，
+父组件：
 
+    //wxml,监听getData事件的触发
+    <right-filter filter-list="{{filterList}}" show-select="{{showSelect}}" bindgetData="getResult"></right-filter>
+    //js
+    getResult: function (data) {
+        //data是点击对象，detail才是数据,这是很奇怪的一点
+    }
+    //json
+    "usingComponents": {
+      "right-filter": "/components/right-filter/right-filter"
+    }
+
+子组件：
+    
+    //wxml与非组件页面相同，展示组件的结构
+    //js
+    
+    /**
+     * 组件的属性列表，默认筛选年月
+     */
+    properties: {
+        //筛选项列表
+        filterList: {
+            type: Array,
+            value: [
+                {
+                    name: '年份',//显示文字
+                    key: 'year',//键值
+                    data: [],//可选范围
+                    show: true,//是否显示
+                    value: ''//选中值
+                }
+            ]
+        },
+        showSelect: {
+            type: Boolean,
+            value: false
+        }
+    },
+    /**
+     * 组件的初始数据
+     */
+    data: {},
+    // 在组件实例进入页面节点树时执行
+    attached: function () {
+    },
+    methods:{
+    //提交筛选值
+        submit: function (e) {
+            this.slideSelect();
+            let data = {};
+            //将结果拼成一个对象
+            this.data.filterList.forEach(function (item) {
+                let key = item.key;
+                data[key] = item.value;
+            });
+            this.triggerEvent('getData', data);//触发父级的事件getData，data为参数
+        },
+     }
+其中有一点比较奇怪的是，子组件传递的参数在父级获取时会被点击对象包裹，应该是子组件触发submit事件的点击对象，应该是包装起来一起传以备不时之需。
