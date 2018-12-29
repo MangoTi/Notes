@@ -1,4 +1,4 @@
-# 微信小程序重点
+# 微信小程序学习笔记
 
 ## 一、项目构成
 
@@ -167,6 +167,26 @@
 （三）基础组件
 组件的公共属性data-* (如data-value)可以绑定任意的属性，组件上触发的事件时，会发送给事件处理函数，事件的参数中会有一个dataset，会包含所有的data-* ,例如value:'',组件都不能在绑定时指定参数，因此只能通过这种方式传参。  
 hidden可以用该属性控制显示影藏。
+
+（四）WXS
+wxs是用来写模块的一种脚本语言，跟js很像，可以构建出页面的结构，可以写在<wxs>标签中，或者.wxs文件中，然后引用<wxs src="./../tools.wxs" module="tools" />，一定要有module，在使用页面调用数据时使用，建议唯一，否则后面的会覆盖前面的。其运行环境和js是隔离的，不能调用js中的函数，也不能调用小程序api。要用module.exports将变量或函数暴露出来，外部才能根据模块名打点调用，以下是示例。
+
+    <!--wxml-->
+    <wxs module="m1">var msg = "hello world"; module.exports.message = msg;</wxs>//module后面是模块名称
+    <view>{{m1.message}}</view>
+    
+    <!--wxml-->
+    <!-- 下面的 getMax 函数，接受一个数组，且返回数组中最大的元素的值 -->
+    <wxs module="m1">
+      var getMax = function(array) { var max = undefined; for (var i = 0; i <
+      array.length; ++i) { max = max === undefined ? array[i] : (max >= array[i] ?
+      max : array[i]); } return max; } module.exports.getMax = getMax;
+    </wxs>
+
+    <!-- 调用 wxs 里面的 getMax 函数，参数为 page.js 里面的 array -->
+    <view>{{m1.getMax(array)}}</view>
+
+在.wxs模块中引用其他 wxs 文件模块，可以使用 require 函数，但是只能使用相对路径，并且每个模块只有一个实例，多处引用的都是同一个，如果定义之后没被引用就不会解析。
 （三）自定义组件  
 1、也是有自己的四件套文件的，在微信开发工具里可以一键创建一套，然后wxml文件中就是标签结构，js文件不同于其余页面，结构如下：
 
