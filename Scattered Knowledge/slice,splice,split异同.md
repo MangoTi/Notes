@@ -1,8 +1,8 @@
 # slice
-用法array.slice(start,end)，string.slice(start,end)用来截取部分内容，可以作用数组和字符串，返回副本，不修改原数据，截取内容不包括end下标的字符或数组项，若只传一个参数（正数），就是从该下标截取直到最后，负数就是从后往前截取，同样用来字符串截取的还有以下几个：
-1、substring
-用法str.substring(indexStart, [indexEnd])，同样不包括end下标的内容，若只传一个数字，用法也与slice相同，同样也不修改原数据，不同的是substring会以小的数字为起点，大的为结尾，slice不行，并且substring不支持负数，会都视为0；
-2、substr
+用法array.slice(start,end)，string.slice(start,end)用来截取部分内容，可以作用数组和字符串，返回副本，不修改原数据，截取内容不包括end下标的字符或数组项，若只传一个参数（正数），就是从该下标截取直到最后，负数就是从后往前截取，同样用来字符串截取的还有以下几个：  
+1、substring  
+用法str.substring(indexStart, [indexEnd])，同样不包括end下标的内容，若只传一个数字，用法也与slice相同，同样也不修改原数据，不同的是substring会以小的数字为起点，大的为结尾，slice不行，并且substring不支持负数，会都视为0；  
+2、substr  
 用法str.substr(start, [length])，不同于前两者的是，第二个参数是要截取的长度，若只传一个数字，用法也与slice相同，但是长度小于0或者等于0，返回空；
 
 # splice
