@@ -187,6 +187,20 @@ wxs是用来写模块的一种脚本语言，跟js很像，可以构建出页面
     <view>{{m1.getMax(array)}}</view>
 
 在.wxs模块中引用其他 wxs 文件模块，可以使用 require 函数，但是只能使用相对路径，并且每个模块只有一个实例，多处引用的都是同一个，如果定义之后没被引用就不会解析。
+
+（五）获取界面上的结点信息  
+即通过api获取wxml的结点上的信息，如节点属性、样式、在界面上的位置等信息，最常见的用法是使用这个接口来查询某个节点的当前位置，以及界面的滚动位置。  
+
+      const query = wx.createSelectorQuery();//返回一个对象实例，感觉很像jQuery里的$
+      query.select('#the-id').boundingClientRect(function (res) {//#rhe-id是一个结点选择器
+        res.top // #the-id 节点的上边界坐标（相对于显示区域）
+      })
+      query.selectViewport().scrollOffset(function (res) {
+        res.scrollTop // 显示区域的竖直滚动位置
+      })
+      query.exec()
+在自定义组件或包含自定义组件的页面中，推荐使用 this.createSelectorQuery 来代替 wx.createSelectorQuery ，这样可以确保在正确的范围内选择节点，避免返回的实例对象是组件被使用页面的。
+
 （三）自定义组件  
 1、也是有自己的四件套文件的，在微信开发工具里可以一键创建一套，然后wxml文件中就是标签结构，js文件不同于其余页面，结构如下：
 
