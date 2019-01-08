@@ -6,7 +6,7 @@
 用法str.substr(start, [length])，不同于前两者的是，第二个参数是要截取的长度，若只传一个数字，用法也与slice相同，但是长度小于0或者等于0，返回空；
 
 # splice
-用法array.splice(start,deleteCount,item...)只能用于数组删除、新增内容，会修改原来的数组，从array中移除一个或多个数据，并用新的item替换它们，item若有多个，会按照参数中的数序一起放在插入位置，若item不传，就是删除，若删除数量为0，就是直接插入。
+用法array.splice(start,deleteCount,item...)只能用于数组删除、新增内容，会修改原来的数组，从array中移除一个或多个数据，并用新的item替换它们，item若有多个，会按照参数中的数序一起放在插入位置，若item不传，就是删除，若删除数量为0，就是直接插入，注意返回的是包含被删除数据的数组，如果有的话。
 
 # split
 用法string.split(separator,limit)，把这个string分割成片段来创建一个字符串数组。可选参数limit可以限制被分割的片段数量。separator参数可以是一个字符串或一个正则表达式，separator是一个空字符，会返回一个单字符的数组。a.split("")可以直接将一个字符串转成数组，每个字符单独为一项。
