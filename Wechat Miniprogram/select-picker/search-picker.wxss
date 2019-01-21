@@ -1,0 +1,57 @@
+/* components/search-picker/search-picker.wxss */
+.searchPicker{
+    position: absolute;
+    z-index: 29;
+    top: 80rpx;
+    width: 80%;
+    background: #fff;
+    border: solid #eee 2rpx;
+    box-shadow:0 0 10rpx #eee;
+    right:10rpx;
+    padding:15rpx;
+}
+.searchPicker input{
+    width: 95%;
+    font-size: 24rpx;
+    color: #515151;
+    position: relative;
+    height: 65rpx;
+    line-height: 65rpx;
+}
+.searchPicker .inputView{
+    display: flex;
+    align-items: center;
+    padding: 0 10rpx;
+    border: solid 1rpx #eee;
+    border-radius: 10rpx;
+}
+.placeholder{
+    color: #ccc;
+    font-size: 24rpx;
+}
+.searchPicker .list{
+    max-height: 450rpx;
+    overflow-y: auto;
+}
+.list text{
+    display: block;
+    height: 70rpx;
+    line-height: 70rpx;
+    padding: 0 20rpx;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+
+}
+.list .item:hover{
+    background: #f3f3f3;
+}
+.closePicker{
+    position: fixed;
+    z-index: 28;
+    background: transparent;
+    top: 0;
+    left: 0;
+    width:100vw;
+    height: 100vh;
+}

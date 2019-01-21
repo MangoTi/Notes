@@ -1,0 +1,32 @@
+<!--components/search-picker/search-picker.wxml-->
+<!--搜索选择组件，父级包含组件的元素要相对定位，否则组件无法定位-->
+<view class="searchPicker" hidden="{{!show}}">
+    <view class="inputView">
+        <input type="text"
+               value="{{inputVal}}"
+               placeholder="{{placeholder}}"
+               placeholder-class="placeholder"
+               bindinput="getInput"
+        />
+        <icon type="clear" size="18" hidden="{{inputVal==''}}" bindtap="clearSelect"></icon>
+    </view>
+    <scroll-view class="list" scroll-y>
+        <!--有结果显示列表-->
+        <block wx:if="{{list.length!=0}}">
+            <view wx:for="{{list}}"
+                  wx:key="{{index}}"
+                  class="item"
+                  bindtap="select"
+                  data-index="{{index}}">
+                <text class="item">{{item[key]||item}}</text>
+            </view>
+            <text class="tips">没有想要的结果？请输入更精确的关键字~</text>
+        </block>
+
+        <!--没有结果-->
+        <text wx:if="{{inputVal!='' && list.length==0}}" class="tips">抱歉，没有结果哦~</text>
+    </scroll-view>
+
+</view>
+<!--用来点击外部关闭搜索选择弹窗-->
+<view class="closePicker" hidden="{{!show}}" bindtap="hidePicker"></view>
