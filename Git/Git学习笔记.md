@@ -16,5 +16,33 @@ Git是目前世界上最先进的分布式版本控制系统，而svn等是集�
 
 ## 时光穿梭
 **1、修改并提交**
-运行git status命令可以查看仓库当前状态，修改了还未提交也会有记录，还可以用git diff来做版本比较，提交也是先git add再git commit
+运行git status命令可以查看仓库当前状态，修改了还未提交也会有记录，还可以用git diff来做版本比较，提交也是先git add再git commit。
 
+**2、版本回退**
+用git log查看提交的版本信息，用$ git reset --hard HEAD^回到上个版本，上上个版本就是HEAD^^，也可以写成HEAD~100，如果已经回到上个版本，原本的版本就不在了log里了，但是要是还能看到原本的版本号，只要$ git reset --hard 1092a，只用写前几个数字，会自己查找，但是只写前1 2位，可能就找不到唯一的。如果是关机之后还想看命令行，可以用git relog便于查到之前的id
+
+**3、工作区和暂存区**
+* 工作区就是本地的内容文件夹；
+* 版本库，工作区的.git文件夹，其中主要是stage（暂存区），以及git为我们自动创建的第一个分支master，以及指向master的指针head，把文件往git版本库中添加的时候，首先是用git add添加到暂存区，然后用git commit提交更改，就是把暂存区的内容提交到当前分支。
+
+**4、撤销修改**
+git checkout --<file>可以将工作区的修改撤销，回到最近一次git commit或者git add的状态，即恢复到版本区的内容；  
+git reset HEAD <file>可以将暂存区的修改撤销。
+
+**5、删除文件**
+如果在文件管理器中将文件删除了，或者用$rm <file>删除了文件，如果确实要将内容删除，使用$git rm删除并且git commit;
+但是如果是删错了，可以使用git checkout --<file>恢复。
+
+## 远程仓库
+GitHub是仓库托管网站，注册账号就可以获取免费的Git远程仓库，由于本地Git和远程仓库间的传输是通过SSH加密的，因此要设置SSH密钥：
+* 1、创建SSH Key：在本地git bash然后$ ssh-keygen -t rsa -C "youremail@example.com"就会在用户主目录中生成一个.ssh目录，里面有id_rsa和id_rsa.pub两个文件，这两个就是SSH Key的秘钥对，id_rsa是私钥，不能泄露出去，id_rsa.pub是公钥，可以放心地告诉任何人；  
+* 2、登录GitHub，打开账户设置，添加SSH Key，填上任意的title，在Key文本框里粘贴id_rsa.pub文件的内容；
+GitHub允许添加多个Key
+
+**1、添加远程库**
+在GitHub上创建远程仓库之后，如果要跟本地已有的Git项目关联起来，使用命令$ git remote add origin git@github.com:michaelliao/learngit.git
+origin是远程库的名称，是默认的叫法，然后可以将本地的内容推送到远程库$ git push -u origin master，实际上是将当前分支master推送到远程，-u是将本地的mater分支跟远程的master分支也关联了起来，后续就可以简化命令，接下来如果本地做了提交就可以通过git push origin master将内容推送到远程库。
+PS:第一次使用SSH连接会有警告，确认信息是否真的来自GitHub，输入yes回车即可。
+
+**2、从远程库克隆**
+如果是先有的远程库，可以将内容克隆到本地，使用$ git clone git@github.com:michaelliao/gitskills.git
